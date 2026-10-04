@@ -1,6 +1,6 @@
 'use strict';
 
-const STORAGE_KEY = 'bierBingoInc.state.v1';
+const STORAGE_KEY = 'bierBingo.state.v1';
 const SIZE = 5;
 const CELL_COUNT = SIZE * SIZE;
 
@@ -220,7 +220,8 @@ function flash(...indices) {
 // ---------- Eigene Popups ----------
 
 // Bestätigungs-Popup als Ersatz für window.confirm – liefert ein Promise<boolean>
-function confirmModal({ icon, title, text = [], warning = '', okLabel, okClass = 'btn-play' }) {
+function confirmModal({ icon, title, text = [], warning = '', okLabel, okClass = 'btn-play',
+  cancelLabel = 'Abbrechen', cancelClass = 'btn-outline' }) {
   const dialog = $('confirmDialog');
   $('confirmIcon').textContent = icon;
   $('confirmTitle').textContent = title;
@@ -233,6 +234,8 @@ function confirmModal({ icon, title, text = [], warning = '', okLabel, okClass =
   $('confirmWarning').hidden = !warning;
   $('confirmOk').textContent = okLabel;
   $('confirmOk').className = `btn ${okClass}`;
+  $('confirmCancel').textContent = cancelLabel;
+  $('confirmCancel').className = `btn ${cancelClass}`;
   dialog.returnValue = '';
   dialog.showModal();
   return new Promise(resolve => {
@@ -371,6 +374,33 @@ function fillEmpty() {
 }
 
 $('fillBtn').addEventListener('click', fillEmpty);
+
+// ---------- Alles löschen ----------
+
+$('clearAllBtn').addEventListener('click', async () => {
+  const filled = state.cells.filter(Boolean).length;
+  if (filled === 0) {
+    toast('Das Bingofeld ist bereits leer.');
+    return;
+  }
+  const ok = await confirmModal({
+    icon: '🗑️',
+    title: 'Alles löschen?',
+    text: [`Alle ${filled} befüllten Felder werden geleert.`],
+    warning: 'Das komplette Bingofeld wird gelöscht – das kann nicht rückgängig gemacht werden!',
+    okLabel: 'Ja, löschen',
+    okClass: 'btn-danger-solid',
+    cancelLabel: 'Abbruch',
+    cancelClass: 'btn-grey'
+  });
+  if (!ok) return;
+
+  state.cells = Array(CELL_COUNT).fill('');
+  swapFirst = null;
+  saveState();
+  render();
+  toast('🗑️ Bingofeld gelöscht');
+});
 
 // ---------- Spiel starten / beenden ----------
 

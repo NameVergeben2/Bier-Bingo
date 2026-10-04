@@ -96,6 +96,7 @@ main, .app-header, .mode-banner {
 .btn-play { background: var(--play); border-color: var(--play); color: #fff; }
 .btn-danger { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
 .btn-danger-solid { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn-grey { background: #e5e7eb; border-color: #d1d5db; color: #374151; }
 .btn-undo { background: var(--beer-soft); border-color: var(--beer); color: #92400e; }
 
 .tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
