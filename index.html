@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Bier Bingo Inc</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-edit">
+  <header class="app-header">
+    <h1>🍺 Bier Bingo Inc</h1>
+    <p class="subtitle">Song Bingo</p>
+  </header>
+
+  <div id="modeBanner" class="mode-banner" role="status">
+    <strong id="modeTitle"></strong>
+    <span id="modeSub"></span>
+  </div>
+
+  <main>
+    <!-- Werkzeuge im Bearbeitungsmodus -->
+    <section id="editTools" class="panel">
+      <div class="tools" role="radiogroup" aria-label="Werkzeug">
+        <button type="button" class="tool" data-tool="edit" role="radio">✏️ Text</button>
+        <button type="button" class="tool" data-tool="swap" role="radio">🔁 Tauschen</button>
+        <button type="button" class="tool" data-tool="clear" role="radio">🗑️ Löschen</button>
+      </div>
+      <p id="toolHint" class="hint"></p>
+    </section>
+
+    <!-- Raster -->
+    <div id="grid" class="grid" aria-label="Bingo-Raster 5 mal 5"></div>
+
+    <!-- Aktionen im Bearbeitungsmodus -->
+    <section id="editActions" class="panel">
+      <p id="filledCount" class="counter"></p>
+      <button type="button" id="fillBtn" class="btn">🎲 Leere Felder auffüllen</button>
+
+      <div class="start-box">
+        <button type="button" id="startBtn" class="btn btn-play btn-big">▶ Spiel starten</button>
+        <p class="warn">⚠️ Nach dem Start sind <strong>keine Bearbeitungen</strong> mehr möglich!</p>
+      </div>
+    </section>
+
+    <!-- Aktionen im Spielmodus -->
+    <section id="playActions" class="panel" hidden>
+      <p id="selectionInfo" class="selection-info"></p>
+      <button type="button" id="markBtn" class="btn btn-play btn-big" disabled>Ausgewähltes Feld ankreuzen</button>
+      <p id="bingoCount" class="counter"></p>
+      <button type="button" id="endBtn" class="btn btn-danger">⏹ Spiel beenden &amp; zurück zum Bearbeiten</button>
+    </section>
+  </main>
+
+  <!-- Popup: Feld bearbeiten -->
+  <dialog id="editDialog" class="dialog">
+    <form method="dialog">
+      <label for="editInput" id="editLabel" class="dialog-label">Feld bearbeiten</label>
+      <input type="text" id="editInput" maxlength="80" autocomplete="off" placeholder="Songtitel eingeben">
+      <div class="dialog-buttons">
+        <button type="button" id="editCancel" class="btn btn-outline">Abbrechen</button>
+        <button type="submit" value="save" class="btn btn-play">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Popup: Bingo -->
+  <dialog id="bingoDialog" class="dialog popup">
+    <div class="popup-icon bingo-burst" aria-hidden="true">🎉🍺🎶🍻🎉</div>
+    <h2 class="popup-title bingo-title">BINGO!</h2>
+    <p id="bingoText" class="popup-text"></p>
+    <p id="bingoTotal" class="muted"></p>
+    <form method="dialog">
+      <button type="submit" class="btn btn-play btn-big">Weiterspielen 🍻</button>
+    </form>
+  </dialog>
+
+  <!-- Popup: Bestätigung (ersetzt window.confirm) -->
+  <dialog id="confirmDialog" class="dialog popup">
+    <div id="confirmIcon" class="popup-icon" aria-hidden="true"></div>
+    <h2 id="confirmTitle" class="popup-title"></h2>
+    <div id="confirmText" class="popup-text"></div>
+    <p id="confirmWarning" class="popup-warning"></p>
+    <div class="dialog-buttons">
+      <button type="button" id="confirmCancel" class="btn btn-outline">Abbrechen</button>
+      <button type="button" id="confirmOk" class="btn btn-play">OK</button>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
